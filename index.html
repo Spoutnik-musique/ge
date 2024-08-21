@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur de Scénario JSON</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <button id="addCharacterBtn">Créer personnage</button>
+            <button id="importJSONBtn" class="import-button">Importer JSON</button>
+            <h2>Liste Personnages :</h2>
+            <div id="characterList">
+                <!-- Les personnages ajoutés apparaîtront ici -->
+            </div>
+            <button id="exportJSONBtn" class="export-button">Exporter JSON</button>
+        </div>
+        <div class="main">
+            <textarea id="jsonEditor" placeholder="Éditez le JSON ici..."></textarea>
+        </div>
+    </div>
+
+    <!-- Pop-up pour ajouter un personnage -->
+    <div id="characterModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Ajouter un personnage</h2>
+            <input type="text" id="characterName" placeholder="Nom du personnage">
+            <input type="text" id="characterAvatar" placeholder="URL de l'avatar">
+            <button id="saveCharacterBtn">Enregistrer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
