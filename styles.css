@@ -24,6 +24,18 @@ body {
     color: #ffffff;
     margin-bottom: 20px;
 }
+/* Ajoutez cette classe pour styliser la croix rouge pour la suppression des messages */
+.discord-message-content .delete-button {
+    cursor: pointer;
+    color: red;
+    font-size: 1.2em;
+    margin-left: 10px;
+    visibility: hidden; /* Caché par défaut */
+}
+
+.discord-message-content:hover .delete-button {
+    visibility: visible; /* Affiche la croix au survol */
+}
 
 #characterList {
     flex-grow: 1;
@@ -76,6 +88,11 @@ input[type="text"] {
     padding: 20px;
     background-color: #2b2b2b;
     color: #00ff00;
+}
+
+
+.character-item:hover .delete-button {
+    visibility: visible; /* Affiche la croix au survol */
 }
 
 textarea#jsonEditor {
@@ -269,3 +286,4 @@ textarea#jsonEditor {
     background-color: #484c52; /* Change la couleur de fond au focus */
     border: 1px solid #00ff00; /* Ajoute une bordure pour montrer qu'il est éditable */
 }
+
