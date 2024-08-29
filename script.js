@@ -56,17 +56,13 @@ function closeScenariosModal() {
 }
 function startNewScenario() {
     const scenarioName = document.getElementById('scénario').value;
-    console.log('Nom du scénario:', scenarioName);
 
     if (scenarioName) {
-        // Enregistre le scénario actuel
+        // Enregistre le scénario actuel si des messages sont présents
         if (messages.length > 0) {
             scenarioJSONs[scenarioName] = JSON.stringify(messages, null, 2);
             scenarios.push(scenarioName);
             saveToLocalStorage();
-            console.log('Scénario sauvegardé:', scenarioName);
-        } else {
-            alert('Il n\'y a pas de messages à sauvegarder pour ce scénario.');
         }
 
         // Réinitialise les personnages et messages pour le nouveau scénario
@@ -116,9 +112,10 @@ function updateScenariosList() {
     });
 }
 
+// Fonction pour ajouter un personnage à la liste des personnages
 function addCharacterToList(character) {
     const characterList = document.getElementById('characterList');
-    
+
     // Crée un conteneur pour chaque personnage
     const characterItem = document.createElement('div');
     characterItem.className = 'character-item';
@@ -133,9 +130,25 @@ function addCharacterToList(character) {
     const text = document.createElement('span');
     text.textContent = character.name;
 
-    // Ajoute l'image et le texte au conteneur
+    // Ajoute la croix rouge pour la suppression
+    const deleteButton = document.createElement('span');
+    deleteButton.textContent = '❌';
+    deleteButton.className = 'delete-button'; // Classe pour styliser la croix rouge
+    deleteButton.addEventListener('click', function(event) {
+        event.stopPropagation(); // Empêche la propagation du clic pour éviter d'ajouter le personnage
+        const index = characters.indexOf(character);
+        if (index > -1) {
+            characters.splice(index, 1); // Supprime le personnage du tableau
+            updateCharacterList(); // Met à jour l'affichage des personnages
+            updateJSONEditor(); // Met à jour le JSON
+            saveToLocalStorage(); // Sauvegarde les modifications
+        }
+    });
+
+    // Ajoute l'image, le texte et la croix rouge au conteneur
     characterItem.appendChild(img);
     characterItem.appendChild(text);
+    characterItem.appendChild(deleteButton);
 
     // Ajoute l'élément du personnage à la liste
     characterList.appendChild(characterItem);
@@ -145,6 +158,8 @@ function addCharacterToList(character) {
         addCharacterToJSON(character);
     });
 }
+
+// Fonction pour ajouter un personnage au JSON
 function addCharacterToJSON(character) {
     const newMessage = {
         webhookName: character.name,
@@ -158,6 +173,14 @@ function addCharacterToJSON(character) {
     updateDiscordMessages();
     updateJSONEditor();
     saveToLocalStorage();
+}
+
+// Fonction pour mettre à jour la liste des personnages
+function updateCharacterList() {
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = ''; // Efface les éléments existants
+
+    characters.forEach(character => addCharacterToList(character));
 }
 
 
@@ -194,19 +217,27 @@ function updateDiscordMessages() {
             saveToLocalStorage();  // Sauvegarde dans le localStorage après modification
         });
 
+        // Ajout de la croix rouge pour la suppression
+        const deleteButton = document.createElement('span');
+        deleteButton.textContent = '❌';
+        deleteButton.className = 'delete-button'; // Classe pour styliser la croix rouge
+        deleteButton.addEventListener('click', function() {
+            messages.splice(index, 1); // Supprimer le message du tableau
+            updateDiscordMessages(); // Met à jour l'affichage des messages
+            updateJSONEditor(); // Met à jour le JSON
+            saveToLocalStorage(); // Sauvegarde les modifications
+        });
+
         messageContent.appendChild(usernameElement);
         messageContent.appendChild(textElement);
+        messageContent.appendChild(deleteButton); // Ajouter la croix rouge
 
         messageElement.appendChild(avatarElement);
         messageElement.appendChild(messageContent);
 
         discordMessages.appendChild(messageElement);
-
     });
 }
-
-
-
 
 function updateJSONEditor() {
     const jsonOutput = JSON.stringify(messages, null, 2);
@@ -355,10 +386,13 @@ function loadScenario(scenarioName) {
             throw new Error('Scenario not found.');
         }
 
-        const loadedMessages = JSON.parse(scenarioJSON);
+        // Efface les données existantes
         characters = [];
         messages = [];
         document.getElementById('characterList').innerHTML = '';
+
+        // Charge les nouvelles données
+        const loadedMessages = JSON.parse(scenarioJSON);
 
         loadedMessages.forEach(msg => {
             if (!characters.find(c => c.name === msg.webhookName)) {
@@ -382,6 +416,7 @@ function loadScenario(scenarioName) {
         console.error('Error loading scenario:', error);
     }
 }
+
 
 function saveToLocalStorage() {
     localStorage.setItem('scenarios', JSON.stringify(scenarios));
