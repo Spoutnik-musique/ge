@@ -1,0 +1,22 @@
+{
+    "dimanche": [
+        {
+            "nom": "Maloye",
+            "heure": "15:30",
+            "salle" : 1
+        },
+        {
+            "nom": "Maloye",
+            "heure": "17:00",
+            "salle" : 2
+        }
+    ],
+    "mardi": [
+        {
+            "nom": "Maloye",
+            "heure": "11:00",
+            "salle" : 2
+        }
+    ],
+    "mercredi": []
+}
