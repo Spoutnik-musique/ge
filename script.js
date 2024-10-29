@@ -17,6 +17,8 @@ document.getElementById('startScenarioBtn').addEventListener('click', startNewSc
 document.getElementById('viewScenariosBtn').addEventListener('click', openScenariosModal);
 document.getElementById('importJSONBtn').addEventListener('click', importJSON);
 document.getElementById('exportJSONBtn').addEventListener('click', exportJSON);
+document.getElementById('importTupperJSONBtn').addEventListener('click', importJSON);
+
 
 window.addEventListener('click', function(event) {
     if (event.target === document.getElementById('characterModal')) {
@@ -187,56 +189,86 @@ function updateCharacterList() {
 
 function updateDiscordMessages() {
     const discordMessages = document.getElementById('discordMessages');
-    discordMessages.innerHTML = ''; // Efface les messages existants
+    discordMessages.innerHTML = ''; // Clear existing messages
 
     messages.forEach((msg, index) => {
+        // Create the main message element
         const messageElement = document.createElement('div');
         messageElement.className = 'discord-message';
+        messageElement.setAttribute('draggable', true);
+        messageElement.setAttribute('data-index', index);
 
+        // Add avatar
         const avatarElement = document.createElement('img');
         avatarElement.src = msg.webhookAvatar;
         avatarElement.alt = msg.webhookName;
-        avatarElement.className = 'discord-message-avatar'; // Classe pour styliser l'avatar
+        avatarElement.className = 'discord-message-avatar';
 
+        // Create the message content
         const messageContent = document.createElement('div');
         messageContent.className = 'discord-message-content';
 
+        // Username
         const usernameElement = document.createElement('div');
         usernameElement.className = 'discord-message-username';
         usernameElement.textContent = msg.webhookName;
 
+        // Message text
         const textElement = document.createElement('div');
         textElement.className = 'discord-message-text';
         textElement.contentEditable = true;
         textElement.textContent = msg.message;
 
-        // Sauvegarder les modifications lorsque l'utilisateur quitte le champ d'édition
         textElement.addEventListener('blur', function() {
             messages[index].message = textElement.textContent;
-            updateJSONEditor();  // Met à jour le JSON après modification
-            saveToLocalStorage();  // Sauvegarde dans le localStorage après modification
+            updateJSONEditor();  // Update JSON after modification
+            saveToLocalStorage();  // Save changes to localStorage
         });
 
-        // Ajout de la croix rouge pour la suppression
+        // Delete button
         const deleteButton = document.createElement('span');
         deleteButton.textContent = '❌';
-        deleteButton.className = 'delete-button'; // Classe pour styliser la croix rouge
+        deleteButton.className = 'delete-button';
         deleteButton.addEventListener('click', function() {
-            messages.splice(index, 1); // Supprimer le message du tableau
-            updateDiscordMessages(); // Met à jour l'affichage des messages
-            updateJSONEditor(); // Met à jour le JSON
-            saveToLocalStorage(); // Sauvegarde les modifications
+            messages.splice(index, 1); // Remove the message from the array
+            updateDiscordMessages(); // Update the displayed messages
+            updateJSONEditor(); // Update the JSON
+            saveToLocalStorage(); // Save changes
         });
 
+        // Append elements
         messageContent.appendChild(usernameElement);
         messageContent.appendChild(textElement);
-        messageContent.appendChild(deleteButton); // Ajouter la croix rouge
+        messageContent.appendChild(deleteButton);
 
         messageElement.appendChild(avatarElement);
         messageElement.appendChild(messageContent);
 
         discordMessages.appendChild(messageElement);
     });
+
+    // Scroll to the bottom of the messages container
+    discordMessages.scrollTop = discordMessages.scrollHeight;
+}
+
+// Ajout de l'événement de recherche de personnage
+document.getElementById('searchCharacter').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();  // Récupère le texte de la barre de recherche
+    updateCharacterList(searchTerm);  // Appelle la fonction de mise à jour avec le terme de recherche
+});
+
+// Modification de la fonction updateCharacterList pour filtrer les personnages
+function updateCharacterList(searchTerm = '') {
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = ''; // Efface les personnages actuels
+
+    // Filtrer les personnages en fonction du terme de recherche
+    const filteredCharacters = characters.filter(character => 
+        character.name.toLowerCase().includes(searchTerm)
+    );
+
+    // Afficher uniquement les personnages filtrés
+    filteredCharacters.forEach(character => addCharacterToList(character));
 }
 
 function updateJSONEditor() {
@@ -282,20 +314,15 @@ async function exportJSON() {
     }
 }
 
-// Fonction pour l'importation du JSON
+// Modify the importJSON function to handle different JSON types
 function importJSON() {
-    console.log('Import JSON function called');
-
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = '.json';
-    fileInput.style.display = 'none';
     document.body.appendChild(fileInput);
 
     fileInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
-        console.log('Selected file:', file);
-
         if (!file) {
             alert('Aucun fichier sélectionné.');
             return;
@@ -304,31 +331,15 @@ function importJSON() {
         const reader = new FileReader();
         reader.onload = function(fileEvent) {
             try {
-                const importedMessages = JSON.parse(fileEvent.target.result);
-                console.log('Imported JSON:', importedMessages);
+                const jsonData = JSON.parse(fileEvent.target.result);
 
-                characters = [];
-                messages = [];
-                document.getElementById('characterList').innerHTML = '';
-
-                importedMessages.forEach(msg => {
-                    if (!characters.find(c => c.name === msg.webhookName)) {
-                        const character = { name: msg.webhookName, avatar: msg.webhookAvatar };
-                        characters.push(character);
-                        addCharacterToList(character);
-                    }
-
-                    messages.push({
-                        webhookName: msg.webhookName,
-                        webhookAvatar: msg.webhookAvatar,
-                        message: msg.message || "",
-                        time: msg.time || 3
-                    });
-                });
-
-                updateDiscordMessages();
-                updateJSONEditor();
-                saveToLocalStorage();
+                // Check for Tupperbox data structure
+                if (jsonData.tuppers && Array.isArray(jsonData.tuppers)) {
+                    importTupperJSON(jsonData);  // Use new Tupper-specific import
+                } else {
+                    // Fallback to the original import function if not Tupper format
+                    originalImportJSON(jsonData);
+                }
             } catch (error) {
                 alert('Erreur lors de l\'importation du fichier JSON');
                 console.error('Error parsing JSON:', error);
@@ -474,5 +485,117 @@ function saveCharacter() {
         closeModal();
     } else {
         alert('Veuillez entrer un nom et un avatar pour le personnage.');
+    }
+}
+// Variables globales pour gérer le drag-and-drop
+let draggedElement = null;
+let dropIndicator = document.getElementById('dropIndicator');
+
+// Fonction pour gérer le dragstart
+function handleDragStart(event) {
+    draggedElement = event.target;
+    draggedElement.classList.add('dragging');
+    setTimeout(() => {
+        draggedElement.classList.add('hidden');
+    }, 0);
+}
+
+// Fonction pour gérer le dragend
+function handleDragEnd(event) {
+    draggedElement.classList.remove('dragging', 'hidden');
+    draggedElement = null;
+    dropIndicator.classList.add('hidden');
+}
+
+// Fonction pour gérer le dragover
+function handleDragOver(event) {
+    event.preventDefault();
+
+    const messagesContainer = document.getElementById('discordMessages');
+    const children = Array.from(messagesContainer.children);
+    const afterElement = getDragAfterElement(messagesContainer, event.clientY);
+
+    if (afterElement) {
+        messagesContainer.insertBefore(dropIndicator, afterElement);
+    } else {
+        messagesContainer.appendChild(dropIndicator);
+    }
+
+    dropIndicator.classList.remove('hidden');
+}
+
+// Fonction pour gérer le drop
+function handleDrop(event) {
+    event.preventDefault();
+
+    const messagesContainer = document.getElementById('discordMessages');
+    const afterElement = getDragAfterElement(messagesContainer, event.clientY);
+
+    messagesContainer.insertBefore(draggedElement, dropIndicator);
+
+    // Mise à jour de l'ordre des messages dans le tableau
+    const draggedIndex = messages.indexOf(messages.find(msg => msg.message === draggedElement.querySelector('.discord-message-text').textContent));
+    const newIndex = afterElement ? messages.indexOf(messages.find(msg => msg.message === afterElement.querySelector('.discord-message-text').textContent)) : messages.length;
+
+    const [movedMessage] = messages.splice(draggedIndex, 1);
+    messages.splice(newIndex, 0, movedMessage);
+
+    updateJSONEditor();
+    saveToLocalStorage();
+
+    dropIndicator.classList.add('hidden');
+}
+
+// Fonction pour obtenir l'élément après lequel on doit insérer
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.discord-message:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+            return { offset, element: child };
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+}
+
+// Appliquer les événements sur chaque message
+function addDragAndDropListeners() {
+    const messages = document.querySelectorAll('.discord-message');
+    messages.forEach(message => {
+        message.setAttribute('draggable', true);
+        message.addEventListener('dragstart', handleDragStart);
+        message.addEventListener('dragend', handleDragEnd);
+        message.addEventListener('dragover', handleDragOver);
+        message.addEventListener('drop', handleDrop);
+    });
+}
+// Function to import Tupperbox JSON data specifically
+function importTupperJSON(tupperData) {
+    try {
+        const parsedData = tupperData.tuppers; // Access the "tuppers" array
+
+        parsedData.forEach(tupper => {
+            const character = {
+                name: tupper.name,
+                avatar: tupper.avatar_url
+            };
+
+            // Avoid duplicate names
+            if (!characters.find(c => c.name === character.name)) {
+                characters.push(character);
+                addCharacterToList(character);
+            }
+        });
+
+        updateJSONEditor();
+        saveToLocalStorage();
+        alert('Importation de Tupperbox réussie!');
+    } catch (error) {
+        console.error('Erreur lors de l\'importation de Tupperbox:', error);
+        alert('Le format JSON est incorrect ou l\'importation a échoué.');
     }
 }
