@@ -10,9 +10,12 @@
     <div class="container">
         <div class="sidebar">
             <button id="addCharacterBtn">Créer personnage</button>
+            <button id="importTupperJSONBtn" class="import-button">Importer Tupper JSON</button>
             <button id="viewScenariosBtn">Mes Scénarios</button>
             <button id="createScenarioBtn">Créer Scénario</button>
             <h2>Liste Personnages :</h2>
+            <!-- Ajouter cette section dans la sidebar avant la liste des personnages -->
+            <input type="text" id="searchCharacter" placeholder="Rechercher un personnage..." />
             <div id="characterList">
                 <!-- Les personnages ajoutés apparaîtront ici -->
             </div>
@@ -21,11 +24,16 @@
             <button id="exportJSONBtn" class="export-button">Exporter JSON</button>
         </div>
         <div class="main">
+            <!-- Inside the body tag -->
+<div id="dropIndicator" class="drop-indicator hidden"></div>
+
             <div id="discordMessages">
+                
                 <!-- Les messages seront affichés ici -->
             </div>
-            <textarea id="jsonEditor" class="hidden" placeholder="Éditez le JSON ici..."></textarea>
-        </div>
+            <textarea id="jsonEditor" placeholder="Éditez le JSON ici..."></textarea>
+                <!-- class="hidden"  -->
+            </div>
     </div>
     </div>
 
@@ -62,4 +70,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
