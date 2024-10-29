@@ -19,6 +19,16 @@ body {
     position: relative;
     height: 95.5%;
 }
+/* Add this to your CSS file */
+.drop-indicator {
+    height: 2px;
+    background-color: lightgray;
+    margin: 4px 0;
+}
+
+.hidden {
+    display: none;
+}
 
 .sidebar h2 {
     color: #ffffff;
@@ -41,14 +51,15 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    margin-bottom: 140px; /* Augmenter l'espace pour les boutons */
+    margin-bottom: 20px; /* Réduisez cet espace pour laisser plus de place à la liste */
 }
+
 
 /* Style général des boutons */
 button {
     width: 100%;
     padding: 10px;
-    border: 2px solid #00ff00;
+    border: 2px solid #615791;
     background-color: #2b2b2b;
     color: #ffffff;
     font-size: 14px;
@@ -63,7 +74,7 @@ button {
 
 /* Effet de hover sur tous les boutons */
 button:hover {
-    background-color: #00ff00;
+    background-color: #615791;
     color: #2b2b2b;
     transform: scale(1.05);
 }
@@ -73,13 +84,13 @@ input[type="text"] {
     width: calc(100% - 22px);
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #00ff00;
+    border: 1px solid #615791;
     background-color: #2b2b2b;
     color: #ffffff;
 }
 /* Effet de hover sur tous les boutons */
 #addCharacterBtn:hover, .character-item:hover, .export-button:hover, .import-button:hover {
-    background-color: #00ff00;
+    background-color: #615791;
     color: #2b2b2b;
     transform: scale(1.02);
 }
@@ -87,7 +98,7 @@ input[type="text"] {
     flex-grow: 1;
     padding: 20px;
     background-color: #2b2b2b;
-    color: #00ff00;
+    color: #615791;
 }
 
 
@@ -99,8 +110,8 @@ textarea#jsonEditor {
     width: 100%;
     height: 100%;
     background-color: #2b2b2b;
-    color: #00ff00;
-    border: 1px solid #00ff00;
+    color: #615791;
+    border: 1px solid #615791;
     padding: 10px;
     font-family: 'Courier New', Courier, monospace;
     resize: none;
@@ -135,7 +146,7 @@ textarea#jsonEditor {
     width: 96%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #00ff00;
+    border: 1px solid #615791;
     background-color: #2b2b2b;
     color: #ffffff;
 }
@@ -143,7 +154,7 @@ textarea#jsonEditor {
 .modal-content button {
     width: 100%;
     padding: 10px;
-    border: 2px solid #00ff00;
+    border: 2px solid #615791;
     background-color: #2b2b2b;
     color: #ffffff;
     font-size: 16px;
@@ -153,7 +164,7 @@ textarea#jsonEditor {
 }
 
 .modal-content button:hover {
-    background-color: #00ff00;
+    background-color: #615791;
     color: #2b2b2b;
     transform: scale(1.05);
 }
@@ -179,7 +190,7 @@ textarea#jsonEditor {
     align-items: center;
     margin-bottom: 10px;
     padding: 10px;
-    border: 2px solid #00ff00;
+    border: 2px solid #615791;
     background-color: #2b2b2b;
     color: #ffffff;
     font-size: 14px;
@@ -197,7 +208,8 @@ textarea#jsonEditor {
 
 /* Style de défilement personnalisé pour la liste des personnages */
 #characterList::-webkit-scrollbar {
-    width: 12px;
+    width: 4px;
+    left: 14px
 }
 
 #characterList::-webkit-scrollbar-track {
@@ -205,12 +217,12 @@ textarea#jsonEditor {
 }
 
 #characterList::-webkit-scrollbar-thumb {
-    background: #00ff00;
+    background: #ffffff;
     border-radius: 10px;
 }
 
 #characterList::-webkit-scrollbar-thumb:hover {
-    background: #00ff00;
+    background: #615791;
 }
 /* Styles pour les boutons dans la liste des scénarios */
 #scenariosList {
@@ -220,7 +232,7 @@ textarea#jsonEditor {
 
 #scenariosList button {
     background-color: #2b2b2b;
-    border: 2px solid #00ff00;
+    border: 2px solid #615791;
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
@@ -234,7 +246,7 @@ textarea#jsonEditor {
 }
 
 #scenariosList button:hover {
-    background-color: #00ff00;
+    background-color: #615791;
     color: #2b2b2b;
     transform: scale(1.05);
 }
@@ -284,6 +296,6 @@ textarea#jsonEditor {
 
 .discord-message-text:focus {
     background-color: #484c52; /* Change la couleur de fond au focus */
-    border: 1px solid #00ff00; /* Ajoute une bordure pour montrer qu'il est éditable */
+    border: 1px solid #615791; /* Ajoute une bordure pour montrer qu'il est éditable */
 }
 
