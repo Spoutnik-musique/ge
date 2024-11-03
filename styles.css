@@ -34,18 +34,19 @@ body {
     color: #ffffff;
     margin-bottom: 20px;
 }
-/* Ajoutez cette classe pour styliser la croix rouge pour la suppression des messages */
-.discord-message-content .delete-button {
+.delete-button {
     cursor: pointer;
     color: red;
     font-size: 1.2em;
     margin-left: 10px;
-    visibility: hidden; /* Caché par défaut */
+    margin-top: 20px;
+    visibility: hidden; /* Initially hidden */
 }
 
 .discord-message-content:hover .delete-button {
-    visibility: visible; /* Affiche la croix au survol */
+    visibility: visible; /* Shows delete button on hover */
 }
+
 
 #characterList {
     flex-grow: 1;
@@ -273,15 +274,21 @@ textarea#jsonEditor {
     border-radius: 50%;
     margin-right: 15px;
 }
-
-.discord-message-content {
-    max-width: 80%;
-}
-
 .discord-message-username {
     font-weight: bold;
     color: #7289da;
     margin-bottom: 5px;
+}
+.discord-message-content {
+    display: flex;
+    align-items: center; /* Vertically center items within message content */
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center username and message vertically */
+    margin-right: 10px;
 }
 
 .discord-message-text {
@@ -290,12 +297,25 @@ textarea#jsonEditor {
     border-radius: 5px;
     line-height: 1.4;
     color: #dcddde;
-    outline: none; /* Supprime les bordures de focus */
+    outline: none;
     cursor: text;
 }
+
+.time-input {
+    background-color: #40444b;
+    color: #dcddde;
+    padding: 8px;
+    border-radius: 5px;
+    width: 28px; /* Adjust width to match desired appearance */
+    outline: none;
+    text-align: center;
+    border: none;
+    font-size: 14px;
+    margin-top: 20px; /* Adjust this value for fine-tuning the vertical alignment */
+}
+
 
 .discord-message-text:focus {
     background-color: #484c52; /* Change la couleur de fond au focus */
     border: 1px solid #615791; /* Ajoute une bordure pour montrer qu'il est éditable */
 }
-
