@@ -192,28 +192,32 @@ function updateDiscordMessages() {
     discordMessages.innerHTML = ''; // Clear existing messages
 
     messages.forEach((msg, index) => {
-        // Create the main message element
+        // Main message container
         const messageElement = document.createElement('div');
         messageElement.className = 'discord-message';
         messageElement.setAttribute('draggable', true);
         messageElement.setAttribute('data-index', index);
 
-        // Add avatar
+        // Avatar
         const avatarElement = document.createElement('img');
         avatarElement.src = msg.webhookAvatar;
         avatarElement.alt = msg.webhookName;
         avatarElement.className = 'discord-message-avatar';
 
-        // Create the message content
+        // Content container (for username, message text, and time input)
         const messageContent = document.createElement('div');
         messageContent.className = 'discord-message-content';
+
+        // Container for username and message input
+        const textContainer = document.createElement('div');
+        textContainer.className = 'text-container';
 
         // Username
         const usernameElement = document.createElement('div');
         usernameElement.className = 'discord-message-username';
         usernameElement.textContent = msg.webhookName;
 
-        // Message text
+        // Editable message text
         const textElement = document.createElement('div');
         textElement.className = 'discord-message-text';
         textElement.contentEditable = true;
@@ -221,8 +225,23 @@ function updateDiscordMessages() {
 
         textElement.addEventListener('blur', function() {
             messages[index].message = textElement.textContent;
-            updateJSONEditor();  // Update JSON after modification
-            saveToLocalStorage();  // Save changes to localStorage
+            updateJSONEditor();
+            saveToLocalStorage();
+        });
+
+        // Append username and message text to textContainer
+        textContainer.appendChild(usernameElement);
+        textContainer.appendChild(textElement);
+
+        // Time input field
+        const timeInput = document.createElement('input');
+        timeInput.type = 'number';
+        timeInput.className = 'time-input';
+        timeInput.value = msg.time || 0;
+        timeInput.addEventListener('input', function() {
+            messages[index].time = parseInt(timeInput.value) || 0;
+            updateJSONEditor();
+            saveToLocalStorage();
         });
 
         // Delete button
@@ -232,24 +251,22 @@ function updateDiscordMessages() {
         deleteButton.addEventListener('click', function() {
             messages.splice(index, 1); // Remove the message from the array
             updateDiscordMessages(); // Update the displayed messages
-            updateJSONEditor(); // Update the JSON
-            saveToLocalStorage(); // Save changes
+            updateJSONEditor();       // Update the JSON
+            saveToLocalStorage();     // Save changes to localStorage
         });
 
-        // Append elements
-        messageContent.appendChild(usernameElement);
-        messageContent.appendChild(textElement);
-        messageContent.appendChild(deleteButton);
+        // Arrange elements
+        messageContent.appendChild(textContainer); // Add text container to content
+        messageContent.appendChild(timeInput);     // Add time input to the right
+        messageContent.appendChild(deleteButton);  // Add delete button to the far right
+        messageElement.appendChild(avatarElement); // Avatar on the left
+        messageElement.appendChild(messageContent); // Content to the right of avatar
 
-        messageElement.appendChild(avatarElement);
-        messageElement.appendChild(messageContent);
-
-        discordMessages.appendChild(messageElement);
+        discordMessages.appendChild(messageElement); // Add to the main container
     });
-
-    // Scroll to the bottom of the messages container
-    discordMessages.scrollTop = discordMessages.scrollHeight;
 }
+
+
 
 // Ajout de l'événement de recherche de personnage
 document.getElementById('searchCharacter').addEventListener('input', function() {
