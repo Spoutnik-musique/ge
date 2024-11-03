@@ -306,14 +306,14 @@ textarea#jsonEditor {
     color: #dcddde;
     padding: 8px;
     border-radius: 5px;
-    width: 28px; /* Adjust width to match desired appearance */
+    min-width: 28px; /* Adjust width to match desired appearance */
+    max-width: 40px; /* Adjust width to match desired appearance */
     outline: none;
     text-align: center;
     border: none;
     font-size: 14px;
-    margin-top: 20px; /* Adjust this value for fine-tuning the vertical alignment */
+    margin-top: 25px; /* Adjust this value for fine-tuning the vertical alignment */
 }
-
 
 .discord-message-text:focus {
     background-color: #484c52; /* Change la couleur de fond au focus */
