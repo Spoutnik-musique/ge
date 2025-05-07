@@ -1,22 +1,15 @@
-{
-    "dimanche": [
-        {
-            "nom": "Maloye",
-            "heure": "15:30",
-            "salle" : 1
-        },
-        {
-            "nom": "Maloye",
-            "heure": "17:00",
-            "salle" : 2
-        }
-    ],
-    "mardi": [
-        {
-            "nom": "Maloye",
-            "heure": "11:00",
-            "salle" : 2
-        }
-    ],
-    "mercredi": []
-}
+[
+  {
+    "nom": "Maloye",
+    "channelId": "1369741353163952270",
+    "heure": "20:30",
+    "jours": ["Lundi", "Mercredi", "Vendredi"]
+  },
+  {
+    "nom": "Maloye",
+    "channelId": "1369741387028762644",
+    "heure": "20:40",
+    "jours": ["Mercredi", "Jeudi"]
+  }
+]
+
