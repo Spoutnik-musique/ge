@@ -2,14 +2,14 @@
   {
     "nom": "montage",
     "channelId": "1391169530989908079",
-    "heure": "00:08",
+    "heure": "00:15",
     "jours": ["Dimanche", "Mercredi", "Samedi"]
   },
   {
-    "nom": "Maloye",
-    "channelId": "1369741387028762644",
-    "heure": "20:40",
-    "jours": ["Mercredi", "Jeudi"]
+    "nom": "montage",
+    "channelId": "1391179448614654074",
+    "heure": "00:20",
+    "jours": ["Dimanche", "Mercredi", "Samedi"]
   }
 ]
 
