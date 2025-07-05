@@ -3,14 +3,21 @@
     "nom": "montage",
     "channelId": "1391169530989908079",
     "channelVocal":"1347621053010153574",
-    "heure": "01:00",
+    "heure": "01:17",
     "jours": ["dimanche", "mercredi", "samedi"]
   },
   {
     "nom": "montage",
     "channelId": "1391179448614654074",
     "channelVocal":"1347621053010153574",
-    "heure": "01:10",
+    "heure": "01:23",
+    "jours": ["dimanche", "mercredi", "samedi"]
+  },
+  {
+    "nom": "montage",
+    "channelId": "1391179448614654074",
+    "channelVocal":"1347621053010153574",
+    "heure": "01:28",
     "jours": ["dimanche", "mercredi", "samedi"]
   }
 ]
