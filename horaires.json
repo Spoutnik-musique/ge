@@ -2,14 +2,14 @@
   {
     "nom": "montage",
     "channelId": "1391169530989908079",
-    "heure": "00:15",
-    "jours": ["Dimanche", "Mercredi", "Samedi"]
+    "heure": "00:25",
+    "jours": ["dimanche", "mercredi", "samedi"]
   },
   {
     "nom": "montage",
     "channelId": "1391179448614654074",
-    "heure": "00:20",
-    "jours": ["Dimanche", "Mercredi", "Samedi"]
+    "heure": "01:30",
+    "jours": ["dimanche", "mercredi", "samedi"]
   }
 ]
 
