@@ -15,7 +15,7 @@
     "webhookName": "Andreas",
     "webhookAvatar": "https://cdn.discordapp.com/avatars/1389886366028136528/126f91dd725dfc2ebb0bd4b45d7b4bc2.webp",
     "message": "https://tenor.com/view/pacing-2fast2furious-tyrese-gif-21415799",
-    "time": 3,
+    "time": 3
   },
   {
     "webhookName": "Andreas",
@@ -550,7 +550,7 @@
     "webhookAvatar": "https://cdn.discordapp.com/avatars/1389886366028136528/b5b6f6d6f5cf09d1a1885d20657c7a03.webp",
     "message": "*part*",
     "time": 3,
-    "songOut": "https://raw.githubusercontent.com/Spoutnik-musique/ge/refs/heads/main/Musique/HeavyHeartbySTEYL3.mp3",
+    "songOut": "https://raw.githubusercontent.com/Spoutnik-musique/ge/refs/heads/main/Musique/HeavyHeartbySTEYL3.mp3"
   },
   {
     "webhookName": "Miguel Calderón",
